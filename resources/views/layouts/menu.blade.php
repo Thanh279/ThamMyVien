@@ -80,6 +80,7 @@
                 </ul>
             </div>
             <div class="col-md-3 col-center-item menu-icon">
+
                 <a class="calendar-check" href="javascript:void(0)" onclick="onOpen_Popup()">
                     <i class="icon-cal"><img src="{{ asset('images/icon/calender_icon.png') }}" /></i>
                     <label>Đặt lịch hẹn</label>
@@ -230,54 +231,55 @@
 <div id="google_translate_element" style="display:none!important;"></div>
 
 <style>
-/* ẨN HOÀN TOÀN GIAO DIỆN GOOGLE DỊCH MẶC ĐỊNH */
-body > .skiptranslate,
-.goog-logo-link,
-.goog-te-gadget span,
-.goog-te-banner-frame,
-#goog-gt-tt,
-.goog-tooltip,
-.goog-tooltip:hover,
-.goog-text-highlight,
-.goog-te-balloon-frame,
-div#goog-gt-,
-iframe.goog-te-banner-frame {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-}
-.goog-te-gadget {
-    color: transparent !important;
-    font-size: 0 !important;
-}
+    /* ẨN HOÀN TOÀN GIAO DIỆN GOOGLE DỊCH MẶC ĐỊNH */
+    body>.skiptranslate,
+    .goog-logo-link,
+    .goog-te-gadget span,
+    .goog-te-banner-frame,
+    #goog-gt-tt,
+    .goog-tooltip,
+    .goog-tooltip:hover,
+    .goog-text-highlight,
+    .goog-te-balloon-frame,
+    div#goog-gt-,
+    iframe.goog-te-banner-frame {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+
+    .goog-te-gadget {
+        color: transparent !important;
+        font-size: 0 !important;
+    }
 </style>
 
 <script>
-window.googleTranslateElementInit = function () {
-    new google.translate.TranslateElement({
-        pageLanguage: 'vi', // ngôn ngữ gốc của site
-        includedLanguages: 'vi,en', // ngôn ngữ hỗ trợ
-        autoDisplay: false
-    }, 'google_translate_element');
-};
+    window.googleTranslateElementInit = function() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'vi', // ngôn ngữ gốc của site
+            includedLanguages: 'vi,en', // ngôn ngữ hỗ trợ
+            autoDisplay: false
+        }, 'google_translate_element');
+    };
 
-// Hàm đổi ngôn ngữ tự động (chạy khi click flag)
-window.translateLanguage = function (lang) {
-    let tries = 0;
-    function trySelect() {
-        const selectField = document.querySelector(".goog-te-combo");
-        if (selectField) {
-            selectField.value = lang;
-            selectField.dispatchEvent(new Event("change"));
-            return;
+    // Hàm đổi ngôn ngữ tự động (chạy khi click flag)
+    window.translateLanguage = function(lang) {
+        let tries = 0;
+
+        function trySelect() {
+            const selectField = document.querySelector(".goog-te-combo");
+            if (selectField) {
+                selectField.value = lang;
+                selectField.dispatchEvent(new Event("change"));
+                return;
+            }
+            tries++;
+            if (tries < 25) setTimeout(trySelect, 200);
         }
-        tries++;
-        if (tries < 25) setTimeout(trySelect, 200);
-    }
-    trySelect();
-};
+        trySelect();
+    };
 </script>
 
 <!-- Nạp script Google Translate -->
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-

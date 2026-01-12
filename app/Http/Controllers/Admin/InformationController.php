@@ -49,7 +49,7 @@ class InformationController extends Controller
         'sunday' => 'Nghỉ'
     ];
 
-    $information->images_address = $information->images_address ? json_decode($information->images_address, true) : [];
+
 
     // Prepare map data
     $information->map_data = [
@@ -72,8 +72,8 @@ class InformationController extends Controller
             'email' => 'required|email|max:255',
             'hotline' => 'nullable|string|max:20',
             'website' => 'nullable|url|max:255',
-            'images_address' => 'nullable|array|max:10',
-            'images_address.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'images_address' => 'nullable|array|max:10',
+            // 'images_address.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'working_time' => 'required|array',
         ]);
 
@@ -94,17 +94,17 @@ class InformationController extends Controller
             $information->website = $request->website;
             $information->working_time = json_encode($request->working_time);
 
-            // Handle images
-            if ($request->hasFile('images_address')) {
-                $imagePaths = [];
-                foreach ($request->file('images_address') as $image) {
-                    if ($image->isValid()) {
-                        $path = $image->store('information_images', 'public');
-                        $imagePaths[] = $path;
-                    }
-                }
-                $information->images_address = json_encode($imagePaths);
-            }
+            // // Handle images
+            // if ($request->hasFile('images_address')) {
+            //     $imagePaths = [];
+            //     foreach ($request->file('images_address') as $image) {
+            //         if ($image->isValid()) {
+            //             $path = $image->store('information_images', 'public');
+            //             $imagePaths[] = $path;
+            //         }
+            //     }
+            //     $information->images_address = json_encode($imagePaths);
+            // }
 
             $information->save();
 
@@ -148,8 +148,8 @@ class InformationController extends Controller
         $data['latitude'] = $request->latitude ?? null;
         $data['longitude'] = $request->longitude ?? null;
 
-        // Preserve existing images_address (no image handling in form)
-        $data['images_address'] = $information->images_address;
+        // // Preserve existing images_address (no image handling in form)
+        // $data['images_address'] = $information->images_address;
 
         $information->update($data);
 

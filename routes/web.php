@@ -216,7 +216,7 @@ Route::get('/tin-tuc/{slug}', function ($slug) {
 Route::get('/tin-tuc/{category}/{slug}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.detail');
 
 Route::get('/lien-he', function () {
-    $hospitalImages = \App\Models\HopitalImage::latest()->take(5)->get();
+    $hospitalImages = \App\Models\HopitalImage::orderBy('order')->take(5)->get();
     $information = \App\Models\Information::first();
     $contactBanner = \App\Models\PageContent::where('page', 'contact_banner')->first();
     return view('contact', compact('hospitalImages', 'information', 'contactBanner'));

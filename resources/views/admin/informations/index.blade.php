@@ -32,7 +32,7 @@
                                         <th>Email</th>
                                         <th>Hotline</th>
                                         <th>Địa chỉ</th>
-                                        <th>Tọa độ</th>
+                                        {{-- <th>Tọa độ</th> --}}
 
                                         <th>Trạng thái</th>
                                         <th>Hành động</th>
@@ -51,13 +51,13 @@
                                             <td>{{ $info->email }}</td>
                                             <td>{{ $info->hotline ?: 'Chưa có' }}</td>
                                             <td>{{ Str::limit($info->address ?: $info->display_address ?? 'Chưa có địa chỉ', 30) }}</td>
-                                            <td>
+                                            {{-- <td>
                                                 @if($info->latitude && $info->longitude)
                                                     {{ number_format($info->latitude, 4) }}, {{ number_format($info->longitude, 4) }}
                                                 @else
                                                     Chưa xác định
                                                 @endif
-                                            </td>
+                                            </td> --}}
 
                                             <td>
                                                 <span class="badge bg-success">Hoạt động</span>

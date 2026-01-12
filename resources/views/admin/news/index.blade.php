@@ -2,6 +2,16 @@
 
 @section('title', 'Danh sách Tin tức')
 
+<style>
+    .card-img-top {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-top-left-radius: 0.375rem;
+        border-top-right-radius: 0.375rem;
+    }
+</style>
+
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>Danh sách Tin tức</h1>
@@ -12,7 +22,7 @@
 
     <form method="GET" action="{{ route('admin.news.index') }}" class="mb-3">
         <div class="row">
-           
+
             <div class="col-md-3">
                 <select name="status" class="form-select">
                     <option value="">Tất cả trạng thái</option>

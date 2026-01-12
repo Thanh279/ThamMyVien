@@ -10,6 +10,7 @@ class HopitalImage extends Model
     protected $table = 'hopital_image';
     protected $fillable = [
         'image',
-        'title'
+        'title',
+        'order',
     ];
 }

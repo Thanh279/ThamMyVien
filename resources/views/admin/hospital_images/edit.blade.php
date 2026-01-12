@@ -22,6 +22,11 @@
         </div>
 
         <div class="form-group mb-3">
+            <label for="order">Thứ tự</label>
+            <input type="number" class="form-control" id="order" name="order" value="{{ old('order', $image->order) }}" placeholder="Nhập thứ tự" min="0">
+        </div>
+
+        <div class="form-group mb-3">
             <label for="image">Chọn ảnh mới (nếu muốn thay)</label>
             <input type="file" class="form-control" id="image" name="image">
         </div>

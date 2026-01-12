@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Trang chủ - Thẩm mỹ Dr.DAT')
+@section('title', 'Trang chủ - Thẩm Mỹ Tận Tâm')
 
 @section('meta_description',
-    'Thẩm mỹ Dr.DAT - Trung tâm thẩm mỹ hàng đầu với dịch vụ phẫu thuật thẩm mỹ chuyên nghiệp,
+    'Thẩm Mỹ Tận Tâm - Trung tâm thẩm mỹ hàng đầu với dịch vụ phẫu thuật thẩm mỹ chuyên nghiệp,
     đội ngũ bác sĩ giàu kinh nghiệm. Tư vấn miễn phí 24/7.')
 
 @section('meta_keywords',
     'thẩm mỹ dr dat, phẫu thuật thẩm mỹ, làm đẹp an toàn, spa thẩm mỹ, cắt mí, nâng mũi, hút mỡ,
     trẻ hóa da, dịch vụ thẩm mỹ chuyên nghiệp, bác sĩ giàu kinh nghiệm, tư vấn miễn phí 24/7')
 
-@section('og_title', 'Trang chủ - Thẩm mỹ Dr.DAT')
+@section('og_title', 'Trang chủ - Thẩm Mỹ Tận Tâm')
 
 @section('og_description',
-    'Thẩm mỹ Dr.DAT - Trung tâm thẩm mỹ hàng đầu với dịch vụ phẫu thuật thẩm mỹ chuyên nghiệp,
+    'Thẩm Mỹ Tận Tâm - Trung tâm thẩm mỹ hàng đầu với dịch vụ phẫu thuật thẩm mỹ chuyên nghiệp,
     đội ngũ bác sĩ giàu kinh nghiệm. Tư vấn miễn phí 24/7.')
 
 @section('og_image', asset('images/logo_Dr_Dat.png'))

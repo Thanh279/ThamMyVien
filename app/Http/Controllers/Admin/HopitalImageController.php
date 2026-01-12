@@ -12,11 +12,11 @@ class HopitalImageController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * Lấy 5 ảnh mới nhất
+     * Lấy 5 ảnh theo thứ tự order
      */
     public function index()
     {
-        $images = HopitalImage::latest()->take(5)->get();
+        $images = HopitalImage::orderBy('order')->take(5)->get();
         $total = HopitalImage::count();
         return view('admin.hospital_images.index', compact('images', 'total'));
     }
@@ -63,10 +63,12 @@ class HopitalImageController extends Controller
             }
         }
 
-        foreach ($images as $imagePath) {
+        $nextOrder = HopitalImage::max('order') + 1;
+        foreach ($images as $index => $imagePath) {
             HopitalImage::create([
                 'image' => $imagePath,
                 'title' => $request->title,
+                'order' => $nextOrder + $index,
             ]);
         }
 
@@ -101,6 +103,7 @@ class HopitalImageController extends Controller
         $validator = Validator::make($request->all(), [
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'title' => 'nullable|string|max:255',
+            'order' => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -118,7 +121,11 @@ class HopitalImageController extends Controller
         }
 
         if ($request->filled('title')) {
-            HopitalImage::query()->update(['title' => $request->title]);
+            $image->update(['title' => $request->title]);
+        }
+
+        if ($request->filled('order')) {
+            $image->update(['order' => $request->order]);
         }
 
         return redirect()->route('admin.hospital_images.index')->with('success', 'Image updated successfully.');
@@ -131,7 +138,7 @@ class HopitalImageController extends Controller
     {
         $total = HopitalImage::count();
 
-       
+
 
         $image = HopitalImage::findOrFail($id);
 

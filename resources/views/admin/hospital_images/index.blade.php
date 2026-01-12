@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>Danh sách Ảnh Bệnh viện</h1>
-        @if ($total = 5)
+        @if ($total < 5)
             <a href="{{ route('admin.hospital_images.create') }}" class="btn btn-primary">Thêm ảnh mới</a>
         @endif
     </div>
@@ -22,6 +22,7 @@
         <thead class="table-light">
             <tr>
                 <th>ID</th>
+                <th>Thứ tự</th>
                 <th>Ảnh</th>
                 <th>Hành động</th>
             </tr>
@@ -30,6 +31,7 @@
             @forelse($images as $image)
                 <tr>
                     <td>{{ $image->id }}</td>
+                    <td>{{ $image->order }}</td>
                     <td><img src="{{ asset('storage/' . $image->image) }}" alt="Hospital Image" style="width: 150px;"></td>
                     <td>
                         <a href="{{ route('admin.hospital_images.edit', $image) }}" class="btn btn-sm btn-warning">Sửa</a>
@@ -43,7 +45,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3" class="text-center">Không có ảnh nào.</td>
+                    <td colspan="4" class="text-center">Không có ảnh nào.</td>
                 </tr>
             @endforelse
         </tbody>

@@ -6,25 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'Thẩm mỹ Dr.DAT' }}</title>
+    <title>{{ $title ?? 'Thẩm Mỹ Tận Tâm' }}</title>
     <meta name="description"
-        content="{{ $meta_description ?? 'Thẩm mỹ Dr.DAT - Dịch vụ thẩm mỹ chuyên nghiệp với đội ngũ bác sĩ giàu kinh nghiệm.' }}">
+        content="{{ $meta_description ?? 'Thẩm Mỹ Tận Tâm - Dịch vụ thẩm mỹ chuyên nghiệp với đội ngũ bác sĩ giàu kinh nghiệm.' }}">
     <meta name="keywords" content="{{ $meta_keywords ?? 'thẩm mỹ, dr dat, phẫu thuật thẩm mỹ, làm đẹp, spa, clinic' }}">
-    <meta name="author" content="Thẩm mỹ Dr.DAT">
+    <meta name="author" content="Thẩm Mỹ Tận Tâm">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="{{ $og_title ?? ($title ?? 'Thẩm mỹ Dr.DAT') }}">
+    <meta property="og:title" content="{{ $og_title ?? ($title ?? 'Thẩm Mỹ Tận Tâm') }}">
     <meta property="og:description"
-        content="{{ $og_description ?? ($meta_description ?? 'Thẩm mỹ Dr.DAT - Dịch vụ thẩm mỹ chuyên nghiệp.') }}">
+        content="{{ $og_description ?? ($meta_description ?? 'Thẩm Mỹ Tận Tâm - Dịch vụ thẩm mỹ chuyên nghiệp.') }}">
     <meta property="og:image" content="{{ $og_image ?? asset('images/logo_Dr_Dat.png') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $og_title ?? ($title ?? 'Thẩm mỹ Dr.DAT') }}">
+    <meta name="twitter:title" content="{{ $og_title ?? ($title ?? 'Thẩm Mỹ Tận Tâm') }}">
     <meta name="twitter:description"
-        content="{{ $og_description ?? ($meta_description ?? 'Thẩm mỹ Dr.DAT - Dịch vụ thẩm mỹ chuyên nghiệp.') }}">
+        content="{{ $og_description ?? ($meta_description ?? 'Thẩm Mỹ Tận Tâm - Dịch vụ thẩm mỹ chuyên nghiệp.') }}">
     <meta name="twitter:image" content="{{ $og_image ?? asset('images/logo_Dr_Dat.png') }}">
 
     <!-- CSS Libraries -->
