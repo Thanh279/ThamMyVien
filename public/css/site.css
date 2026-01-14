@@ -762,7 +762,7 @@ ul.ul-ribon ul {
 .d-Mobile .btn-miniMenu {
     display: block;
     position: absolute;
-    right: 20px;
+    right: 0px;
     top: 5px;
     font-size: 40px;
 }

@@ -1,4 +1,4 @@
-<div class="col-md-3 d-flex justify-content-end">
+<div class="col-md-3 d-flex justify-content-end" style="flex-basis: max-content;">
     <div class="head-seach">
         <form action="{{ route('search.results') }}" method="POST" id="searchForm">
             @csrf
