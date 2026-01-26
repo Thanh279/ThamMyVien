@@ -95,7 +95,7 @@
                         <ul class="m-ul-sub" style="width:180px; top:45px; right:0; z-index:10;">
                             <li class="active">
                                 <a href="javascript:void(0)"
-                                    onclick="translateLanguage('vi');changeLanguageUI(this, 'vi')">
+                                    onclick="translateLanguage('vi');changeLanguageUI(this, 'vi');saveLanguage('vi')">
                                     <img class="icon-flag" src="{{ asset('images/icon/icon_flag_vn.png') }}" />
                                     <span>Tiếng Việt</span>
                                     <img class="icon-check" src="{{ asset('images/icon/icon_lang_check.png') }}" />
@@ -103,7 +103,8 @@
                             </li>
                             <li>
                                 <a href="javascript:void(0)"
-                                    onclick="translateLanguage('en'); changeLanguageUI(this, 'en')">
+                                    onclick="translateLanguage('en');changeLanguageUI(this, 'en');saveLanguage('en')">
+
                                     <img class="icon-flag" src="{{ asset('images/icon/icon_flag_en.png') }}" />
                                     <span>Tiếng Anh</span>
                                     <img class="icon-check" src="{{ asset('images/icon/icon_lang_check.png') }}" />
@@ -121,25 +122,58 @@
     function changeLanguageUI(el, lang) {
         // Bỏ active tất cả
         $(el).closest("ul").find("li").removeClass("active");
-
         // Active cái đang chọn
         $(el).parent().addClass("active");
-
         // Ẩn tất cả dấu tích
         $(el).closest("ul").find(".icon-check").hide();
-
         // Hiện dấu tích cho cái đang chọn
         $(el).find(".icon-check").show();
-
         // Đổi cờ trên nút chính
         var selectedFlag = $(el).find(".icon-flag").attr("src");
         var $mainBtn = $(el).closest(".li-group").children("a");
         $mainBtn.find(".icon-flag").attr("src", selectedFlag);
-
         // Đổi text nút chính (nếu muốn)
         var selectedText = $(el).find("span").text();
         $mainBtn.find("span").text(selectedText);
+        // Lưu trạng thái vào key chung
+        localStorage.setItem('site_language', lang);
+        localStorage.setItem('site_language_flag', selectedFlag);
+        localStorage.setItem('site_language_text', selectedText);
+        // Đồng bộ sang header
+        var $headerBtn = $(".lang-header-btn");
+        if ($headerBtn.length) {
+            $headerBtn.find(".icon-flag").attr("src", selectedFlag);
+            $headerBtn.find("span").text(selectedText);
+        }
     }
+    // Khôi phục trạng thái ngôn ngữ menu khi reload
+    document.addEventListener('DOMContentLoaded', function() {
+        var lang = localStorage.getItem('site_language');
+        var flag = localStorage.getItem('site_language_flag');
+        var text = localStorage.getItem('site_language_text');
+        if (!lang || !flag || !text) return;
+        // Gọi translate cho cả menu và header
+        translateLanguage(lang);
+        // Đổi cờ và text trên nút chính menu
+        var $mainBtn = $(".ul-icon .li-group > a");
+        $mainBtn.find(".icon-flag").attr("src", flag);
+        if ($mainBtn.find("span").length) {
+            $mainBtn.find("span").text(text);
+        } else {
+            $mainBtn.append('<span>' + text + '</span>');
+        }
+        // Đổi active cho item menu con
+        var elMenu = document.querySelector('.ul-icon .m-ul-sub a[onclick*="'
+            "+lang+"
+            '"]');
+        if (elMenu) changeLanguageUI(elMenu, lang);
+        // Đổi cờ và text trên header
+        var $headerBtn = $(".lang-header-btn");
+        if ($headerBtn.length) {
+            $headerBtn.find(".icon-flag").attr("src", flag);
+            $headerBtn.find("span").text(text);
+        }
+    });
 
     window.googleTranslateElementInit = function() {
         new google.translate.TranslateElement({
@@ -164,6 +198,11 @@
         }
         trySelect();
     };
+</script>
+<script>
+    function saveLanguage(lang) {
+        localStorage.setItem('site_language', lang);
+    }
 </script>
 
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -222,6 +261,36 @@
         const selectedText = $(el).find("span").text();
         $mainBtn.find("span").text(selectedText);
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedLang = localStorage.getItem('site_language');
+
+        if (!savedLang) return;
+
+        // Chờ google translate sẵn sàng
+        let tries = 0;
+
+        function restoreLanguage() {
+            const select = document.querySelector(".goog-te-combo");
+            if (select) {
+                translateLanguage(savedLang);
+
+                // update UI đúng item
+                const el = document.querySelector(
+                    `.m-ul-sub a[onclick*="('${savedLang}')"]`
+                );
+                if (el) {
+                    changeLanguageUI(el, savedLang);
+                }
+                return;
+            }
+
+            if (++tries < 30) setTimeout(restoreLanguage, 200);
+        }
+
+        restoreLanguage();
+    });
 </script>
 
 <!-- Google Translate script (bắt buộc async từ Google) -->

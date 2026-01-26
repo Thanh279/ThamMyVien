@@ -117,9 +117,12 @@ html {
 }
 
 .icon-flag {
-     width: 18px;       /* fix kích thước */
-    height: 12px;      /* giữ tỉ lệ lá cờ */
-    object-fit: cover; /* tránh méo ảnh */
+    width: 18px;
+    /* fix kích thước */
+    height: 12px;
+    /* giữ tỉ lệ lá cờ */
+    object-fit: cover;
+    /* tránh méo ảnh */
     margin-right: 6px;
     vertical-align: middle;
 }
@@ -241,7 +244,7 @@ html {
     /* đủ dài cho submenu */
 }
 
-.d-Mobile .main-menu li.open > .m-ul-sub-child {
+.d-Mobile .main-menu li.open>.m-ul-sub-child {
     max-height: none;
     overflow: visible;
     position: relative;
@@ -281,10 +284,10 @@ html {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 0;
     padding: 10px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.d-Mobile .main-menu li.open > .m-ul-sub {
+.d-Mobile .main-menu li.open>.m-ul-sub {
     max-height: none;
     overflow: visible;
 }
@@ -402,11 +405,21 @@ div.body-scrolling .menu-logo img {
 /*banner*/
 .cl-banner {
     background: url("../images/banners/banner_1.png") center center;
+    background-size: cover;
 }
 
 .cl-banner .ct-banner {
     min-height: 100vh;
 }
+
+@media (max-width: 768px) {
+    .cl-banner {
+        background-size: contain !important;
+        margin-top: 60px  !important;
+        min-height: 50vh  !important;
+    }
+}
+
 
 /*footer*/
 .cl-footer {
@@ -780,17 +793,24 @@ ul.ul-ribon ul {
     max-height: 100vh;
     overflow-y: auto;
 }
-.d-Mobile .main-menu {
-    display: none; /* Ẩn mặc định */
-    max-height: 0; /* Chiều cao ban đầu là 0 */
 
-    transition: max-height 0.3s ease-in-out; /* Hiệu ứng mượt mà */
+.d-Mobile .main-menu {
+    display: none;
+    /* Ẩn mặc định */
+    max-height: 0;
+    /* Chiều cao ban đầu là 0 */
+
+    transition: max-height 0.3s ease-in-out;
+    /* Hiệu ứng mượt mà */
 }
 
 .d-Mobile .main-menu.mini-show {
-    display: block; /* Hiển thị khi có class mini-show */
-    max-height: none; /* Chiều cao tự nhiên khi mở */
+    display: block;
+    /* Hiển thị khi có class mini-show */
+    max-height: none;
+    /* Chiều cao tự nhiên khi mở */
 }
+
 .d-Mobile div.cl-header .m-head {
     display: none;
 }

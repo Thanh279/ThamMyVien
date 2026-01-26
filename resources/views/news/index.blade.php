@@ -9,18 +9,22 @@
     @elseif(isset($newsBanner) && $newsBanner && $newsBanner->content)
         <meta name="description" content="{{ Str::limit(strip_tags($newsBanner->content), 160) }}">
     @else
-        <meta name="description" content="Tin tức mới nhất về thẩm mỹ, làm đẹp tại Thẩm mỹ Dr.DAT. Cập nhật thông tin, kiến thức, xu hướng làm đẹp hàng ngày.">
+        <meta name="description"
+            content="Tin tức mới nhất về thẩm mỹ, làm đẹp tại Thẩm mỹ Dr.DAT. Cập nhật thông tin, kiến thức, xu hướng làm đẹp hàng ngày.">
     @endif
 
     {{-- Meta Keywords --}}
     @if (isset($category) && $category->name)
-        <meta name="keywords" content="{{ $category->name }}, {{ Str::slug($category->name) }}, thẩm mỹ, làm đẹp, Dr.DAT, tin tức thẩm mỹ, xu hướng làm đẹp, kiến thức thẩm mỹ">
+        <meta name="keywords"
+            content="{{ $category->name }}, {{ Str::slug($category->name) }}, thẩm mỹ, làm đẹp, Dr.DAT, tin tức thẩm mỹ, xu hướng làm đẹp, kiến thức thẩm mỹ">
     @else
-        <meta name="keywords" content="tin tức thẩm mỹ, làm đẹp, thẩm mỹ Dr.DAT, xu hướng làm đẹp, kiến thức thẩm mỹ, tin tức làm đẹp mới nhất, tư vấn thẩm mỹ, dịch vụ thẩm mỹ chuyên nghiệp">
+        <meta name="keywords"
+            content="tin tức thẩm mỹ, làm đẹp, thẩm mỹ Dr.DAT, xu hướng làm đẹp, kiến thức thẩm mỹ, tin tức làm đẹp mới nhất, tư vấn thẩm mỹ, dịch vụ thẩm mỹ chuyên nghiệp">
     @endif
 
     {{-- Open Graph Meta Tags --}}
-    <meta property="og:title" content="{{ isset($category) ? $category->name . ' - Thẩm mỹ Dr.DAT' : 'Tin tức - Thẩm mỹ Dr.DAT' }}">
+    <meta property="og:title"
+        content="{{ isset($category) ? $category->name . ' - Thẩm mỹ Dr.DAT' : 'Tin tức - Thẩm mỹ Dr.DAT' }}">
 
     @php
         $metaDescription = '';
@@ -44,7 +48,8 @@
 
     {{-- Twitter Card Meta Tags --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ isset($category) ? $category->name . ' - Thẩm mỹ Dr.DAT' : 'Tin tức - Thẩm mỹ Dr.DAT' }}">
+    <meta name="twitter:title"
+        content="{{ isset($category) ? $category->name . ' - Thẩm mỹ Dr.DAT' : 'Tin tức - Thẩm mỹ Dr.DAT' }}">
     <meta name="twitter:description" content="{{ $metaDescription }}">
     <meta name="twitter:image" content="{{ asset('images/og-image-tintuc.jpg') }}">
     <meta name="twitter:site" content="@ThammyDrDAT">
@@ -153,15 +158,22 @@
                                                 ) {
                                                     $firstImage = $news->images[0];
                                                 }
+                                                $detailUrl = route('news.detail', [
+                                                    $news->category->slug ?? 'chuyen-mon',
+                                                    $news->slug,
+                                                ]);
                                             @endphp
-                                            <img src="{{ $firstImage ? asset('storage/' . $firstImage) : asset('images/default-news.png') }}"
-                                                alt="{{ Str::limit($news->title, 50) }}" class="img-fluid"
-                                                style="height: 200px;" />
+                                            <a href="{{ $detailUrl }}">
+                                                <img src="{{ $firstImage ? asset('storage/' . $firstImage) : asset('images/default-news.png') }}"
+                                                    alt="{{ Str::limit($news->title, 50) }}" class="img-fluid"
+                                                    style="height: 200px;" />
+                                            </a>
                                         </div>
                                         <div class="dv-info d-flex flex-column" style="flex: 1;">
                                             <h2>{{ Str::limit($news->title, 70) }}</h2>
                                             <p class="cl-info-date">
-                                                <label style="display: inline;">{{ $news->category ? $news->category->name : 'Chưa phân loại' }}</label>
+                                                <label
+                                                    style="display: inline;">{{ $news->category ? $news->category->name : 'Chưa phân loại' }}</label>
                                                 <i style="font-size: 13px; display: inline; margin-left: 3px;">
                                                     {{ $news->published_at ? $news->published_at->format('H:i, d/m/Y') : 'Bản nháp' }}
                                                 </i>
@@ -175,7 +187,8 @@
                             @empty
                                 <div class="col-12">
                                     <div class="text-center py-5">
-                                        <h4>{{ isset($category) ? 'Chưa có tin tức nào trong danh mục này.' : 'Chưa có tin tức nào.' }}</h4>
+                                        <h4>{{ isset($category) ? 'Chưa có tin tức nào trong danh mục này.' : 'Chưa có tin tức nào.' }}
+                                        </h4>
                                         <p>Vui lòng quay lại sau để xem các tin tức mới nhất.</p>
                                     </div>
                                 </div>

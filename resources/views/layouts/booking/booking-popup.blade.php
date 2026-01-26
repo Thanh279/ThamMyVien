@@ -63,15 +63,15 @@
                     <div class="col-6">
                         <input type="date" name="appointment_date" placeholder="Chọn ngày hẹn" class="ctr-h-input"
                             style="border-radius: 8px;"
-                            value="{{ now()->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d') }}" required />
+                            value="{{ now()->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d') }}"
+                            min="{{ now()->setTimezone('Asia/Ho_Chi_Minh')->format('Y-m-d') }}" required />
                         <div class="text-danger" id="error_appointment_date"></div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-12">
-                        <textarea name="notes" rows="3" placeholder="Ghi chú" class="ctr-h-input"
-                            style="border-radius: 8px;"></textarea>
+                        <textarea name="notes" rows="3" placeholder="Ghi chú" class="ctr-h-input" style="border-radius: 8px;"></textarea>
                         <div class="text-danger" id="error_notes"></div>
                     </div>
                 </div>
@@ -127,26 +127,32 @@
             service_id: {
                 element: form.querySelector('select[name="service_id"]'),
                 errorEl: 'error_service_id',
-                messages: { required: 'Vui lòng chọn dịch vụ' }
+                messages: {
+                    required: 'Vui lòng chọn dịch vụ'
+                }
             },
             appointment_time: {
                 element: form.querySelector('input[name="appointment_time"]'),
                 errorEl: 'error_appointment_time',
-                messages: { required: 'Vui lòng chọn giờ hẹn' }
+                messages: {
+                    required: 'Vui lòng chọn giờ hẹn'
+                }
             },
             appointment_date: {
                 element: form.querySelector('input[name="appointment_date"]'),
                 errorEl: 'error_appointment_date',
                 messages: {
                     required: 'Vui lòng chọn ngày hẹn',
-                    futureDate: 'Ngày hẹn không được nhỏ hơn ngày hiện tại'
+                    futureDate: 'Ngày chọn không hợp lệ'
                 }
             },
             notes: {
                 element: form.querySelector('textarea[name="notes"]'),
                 errorEl: 'error_notes',
                 maxLength: 1000,
-                messages: { maxLength: 'Ghi chú tối đa 1000 ký tự' }
+                messages: {
+                    maxLength: 'Ghi chú tối đa 1000 ký tự'
+                }
             }
         };
 
@@ -156,27 +162,56 @@
             errorEl.innerText = '';
             field.element.classList.remove('is-invalid', 'is-valid');
 
-            let isValid = true, msg = '';
+            let isValid = true,
+                msg = '';
 
             if (field === fields.customer_name) {
-                if (!value) { msg = field.messages.required; isValid = false; }
-                else if (value.length < field.minLength) { msg = field.messages.minLength; isValid = false; }
-                else if (!field.regex.test(value)) { msg = field.messages.pattern; isValid = false; }
+                if (!value) {
+                    msg = field.messages.required;
+                    isValid = false;
+                } else if (value.length < field.minLength) {
+                    msg = field.messages.minLength;
+                    isValid = false;
+                } else if (!field.regex.test(value)) {
+                    msg = field.messages.pattern;
+                    isValid = false;
+                }
             } else if (field === fields.customer_phone) {
-                if (!value) { msg = field.messages.required; isValid = false; }
-                else if (!field.regex.test(value)) { msg = field.messages.pattern; isValid = false; }
+                if (!value) {
+                    msg = field.messages.required;
+                    isValid = false;
+                } else if (!field.regex.test(value)) {
+                    msg = field.messages.pattern;
+                    isValid = false;
+                }
             } else if (field === fields.service_id) {
-                if (!value) { msg = field.messages.required; isValid = false; }
+                if (!value) {
+                    msg = field.messages.required;
+                    isValid = false;
+                }
             } else if (field === fields.appointment_time) {
-                if (!value) { msg = field.messages.required; isValid = false; }
+                if (!value) {
+                    msg = field.messages.required;
+                    isValid = false;
+                }
             } else if (field === fields.appointment_date) {
-                if (!value) { msg = field.messages.required; isValid = false; }
-                else {
-                    const sel = new Date(value), today = new Date(); today.setHours(0,0,0,0);
-                    if (sel < today) { msg = field.messages.futureDate; isValid = false; }
+                if (!value) {
+                    msg = field.messages.required;
+                    isValid = false;
+                } else {
+                    const sel = new Date(value),
+                        today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    if (sel < today) {
+                        msg = field.messages.futureDate;
+                        isValid = false;
+                    }
                 }
             } else if (field === fields.notes) {
-                if (value && value.length > field.maxLength) { msg = field.messages.maxLength; isValid = false; }
+                if (value && value.length > field.maxLength) {
+                    msg = field.messages.maxLength;
+                    isValid = false;
+                }
             }
 
             if (!isValid) {
@@ -196,7 +231,25 @@
             });
 
             let hasError = false;
-            Object.values(fields).forEach(f => { if (!validateField(f)) hasError = true; });
+            Object.values(fields).forEach(f => {
+                if (!validateField(f)) hasError = true;
+            });
+
+            // Nếu ngày hẹn là quá khứ thì không gửi form
+            const dateField = fields.appointment_date.element;
+            const dateValue = dateField.value;
+            if (dateValue) {
+                const sel = new Date(dateValue),
+                    today = new Date();
+                today.setHours(0, 0, 0, 0);
+                if (sel < today) {
+                    document.getElementById(fields.appointment_date.errorEl).innerText = fields
+                        .appointment_date.messages.futureDate;
+                    dateField.classList.add('is-invalid');
+                    hasError = true;
+                }
+            }
+
             if (hasError) return;
 
             const submitBtn = document.getElementById('submit-btn');
@@ -204,33 +257,41 @@
             submitBtn.innerHTML = '<span>Đang gửi...</span><i class="fa fa-spinner fa-spin"></i>';
 
             fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form),
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-            })
-            .then(r => r.json())
-            .then(data => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span>Đặt lịch ngay</span><i class="fa fa-angle-right"></i>';
-                if (data.success) {
-                    form.reset();
-                    const now = new Date();
-                    form.querySelector('input[name="appointment_time"]').value = now.toTimeString().slice(0,5);
-                    form.querySelector('input[name="appointment_date"]').value = now.toISOString().split('T')[0];
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('booking_Popup'));
-                    if (modal) modal.hide();
-                } else if (data.errors) {
-                    Object.keys(data.errors).forEach(k => {
-                        const el = document.getElementById(`error_${k}`);
-                        if (el) el.innerText = data.errors[k][0];
-                        if (fields[k]) fields[k].element.classList.add('is-invalid');
-                    });
-                }
-            })
-            .catch(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<span>Đặt lịch ngay</span><i class="fa fa-angle-right"></i>';
-            });
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(r => r.json())
+                .then(data => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML =
+                        '<span>Đặt lịch ngay</span><i class="fa fa-angle-right"></i>';
+                    if (data.success) {
+                        form.reset();
+                        const now = new Date();
+                        form.querySelector('input[name="appointment_time"]').value = now
+                            .toTimeString().slice(0, 5);
+                        form.querySelector('input[name="appointment_date"]').value = now
+                            .toISOString().split('T')[0];
+                        const modal = bootstrap.Modal.getInstance(document.getElementById(
+                            'booking_Popup'));
+                        if (modal) modal.hide();
+                    } else if (data.errors) {
+                        Object.keys(data.errors).forEach(k => {
+                            const el = document.getElementById(`error_${k}`);
+                            if (el) el.innerText = data.errors[k][0];
+                            if (fields[k]) fields[k].element.classList.add('is-invalid');
+                        });
+                    }
+                })
+                .catch(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML =
+                        '<span>Đặt lịch ngay</span><i class="fa fa-angle-right"></i>';
+                });
         });
     });
 </script>

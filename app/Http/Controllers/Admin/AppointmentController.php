@@ -149,7 +149,7 @@ public function update(Request $request, Appointment $appointment)
                 'customer_phone'    => 'required|digits:10',
                 // 'customer_email'    => 'required|email|max:255',
                 'service_id'        => 'required|exists:services,id',
-                'appointment_date'  => 'required|date',
+                'appointment_date'  => 'required|date|after_or_equal:today',
                 'appointment_time'  => 'nullable',
                 'notes'             => 'nullable|string|max:1000',
             ]);
@@ -163,11 +163,13 @@ public function update(Request $request, Appointment $appointment)
                 'customer_email' => 'required|email|max:255',
                 'customer_phone' => 'required|digits:10',
                 'notes'          => 'nullable|string|max:1000', // Thêm nullable cho notes
+                // Nếu có trường appointment_date thì kiểm tra hợp lệ
+                'appointment_date' => $request->has('appointment_date') ? 'required|date|after_or_equal:today' : '',
             ]);
 
             $validated['service_id'] = null;
             $validated['appointment_time'] = now()->format('H:i');
-            $validated['appointment_date'] = now()->format('Y-m-d');
+            $validated['appointment_date'] = $validated['appointment_date'] ?? now()->format('Y-m-d');
             $validated['estimated_price'] = 0;
         } else {
             // Phần tư vấn
@@ -176,11 +178,13 @@ public function update(Request $request, Appointment $appointment)
                 'customer_email' => 'required|email|max:255',
                 'customer_phone' => 'required|digits:10',
                 'notes'          => 'required|string|max:1000',
+                // Nếu có trường appointment_date thì kiểm tra hợp lệ
+                'appointment_date' => $request->has('appointment_date') ? 'required|date|after_or_equal:today' : '',
             ]);
 
             $validated['service_id'] = null;
             $validated['appointment_time'] = now()->format('H:i');
-            $validated['appointment_date'] = now()->format('Y-m-d');
+            $validated['appointment_date'] = $validated['appointment_date'] ?? now()->format('Y-m-d');
             $validated['estimated_price'] = 0;
         }
 

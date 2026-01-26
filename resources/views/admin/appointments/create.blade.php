@@ -71,6 +71,18 @@
                                     </div>
 
                                     <div class="form-group">
+
+                                        <label for="appointment_date">Ngày hẹn *</label>
+                                        <input type="date"
+                                            class="form-control @error('appointment_date') is-invalid @enderror"
+                                            id="appointment_date" name="appointment_date"
+                                            value="{{ old('appointment_date') }}" min="{{ date('Y-m-d') }}" required>
+                                        @error('appointment_date')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="appointment_time">Giờ hẹn *</label>
                                         <input type="text"
                                             class="form-control @error('appointment_time') is-invalid @enderror"

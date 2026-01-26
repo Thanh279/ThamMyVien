@@ -93,7 +93,7 @@
                                             class="form-control @error('appointment_date') is-invalid @enderror"
                                             id="appointment_date" name="appointment_date"
                                             value="{{ old('appointment_date', $appointment->appointment_date->format('Y-m-d')) }}"
-                                            required>
+                                            min="{{ date('Y-m-d') }}" required>
                                         @error('appointment_date')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

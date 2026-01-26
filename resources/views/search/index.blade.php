@@ -10,7 +10,7 @@
                        value="{{ request('keyword', '') }}"
                        required />
 
-                <!-- Icon đóng vai trò như button -->
+                <!-- iiIcon đóng vai trò như button -->
                 <button type="submit"
                         id="searchIconBtn"
                         class="fa fa-search search-submit-btn"

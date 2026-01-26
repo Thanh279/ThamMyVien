@@ -70,7 +70,8 @@
                                         <ul class="m-ul-sub" style="width:180px; top:30px; left:-15px;">
                                             <li>
                                                 <a href="javascript:void(0)"
-                                                    onclick="translateLanguage('vi');changeLanguageUI(this, 'vi')">
+                                                    onclick="translateLanguage('vi');changeLanguageUI(this, 'vi');saveLanguage('vi')">
+
                                                     <img class="icon-flag"
                                                         src="{{ asset('images/icon/icon_flag_vn.png') }}" />
                                                     <span>Tiếng Việt</span>
@@ -80,7 +81,8 @@
                                             </li>
                                             <li>
                                                 <a href="javascript:void(0)"
-                                                    onclick="translateLanguage('en');changeLanguageUI(this, 'en')">
+                                                    onclick="translateLanguage('en');changeLanguageUI(this, 'en');saveLanguage('en')">
+
                                                     <img class="icon-flag"
                                                         src="{{ asset('images/icon/icon_flag_en.png') }}" />
                                                     <span>English</span>
@@ -146,6 +148,11 @@
     <script src="{{ asset('js/_jquery.js') }}"></script>
     <script src="{{ asset('js/lib/slide-slick.js') }}"></script>
     <script src="{{ asset('js/menu.js') }}"></script>
+    <script>
+        function saveLanguage(lang) {
+            localStorage.setItem('site_language', lang);
+        }
+    </script>
 
     <!-- Scripts -->
     <script>
@@ -285,6 +292,20 @@
             $btn.find(".icon-flag").attr("src", flag);
             const text = $(el).find("span").text();
             $btn.find("span").text(text);
+            // Lưu trạng thái vào key chung
+            localStorage.setItem('site_language', lang);
+            localStorage.setItem('site_language_flag', flag);
+            localStorage.setItem('site_language_text', text);
+            // Đồng bộ sang menu
+            var $menuBtn = $(".ul-icon .li-group > a");
+            if ($menuBtn.length) {
+                $menuBtn.find(".icon-flag").attr("src", flag);
+                if ($menuBtn.find("span").length) {
+                    $menuBtn.find("span").text(text);
+                } else {
+                    $menuBtn.append('<span>' + text + '</span>');
+                }
+            }
         }
     </script>
 
@@ -292,6 +313,40 @@
 
     @yield('scripts')
     @yield('meta')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var lang = localStorage.getItem('site_language');
+            var flag = localStorage.getItem('site_language_flag');
+            var text = localStorage.getItem('site_language_text');
+            if (!lang || !flag || !text) return;
+            // Gọi translate cho cả menu và header
+            translateLanguage(lang);
+            // Đổi cờ và text trên nút chính header
+            var $headerBtn = $(".lang-header-btn");
+            if ($headerBtn.length) {
+                $headerBtn.find(".icon-flag").attr("src", flag);
+                $headerBtn.find("span").text(text);
+            }
+            // Đổi active cho item header
+            var elHeader = document.querySelector('.ul-lang .m-ul-sub a[onclick*="'
+                "+lang+"
+                '"]');
+            if (elHeader) changeLanguageUI(elHeader, lang);
+            // Đổi cờ và text trên nút chính menu
+            var $mainBtn = $(".ul-icon .li-group > a");
+            $mainBtn.find(".icon-flag").attr("src", flag);
+            if ($mainBtn.find("span").length) {
+                $mainBtn.find("span").text(text);
+            } else {
+                $mainBtn.append('<span>' + text + '</span>');
+            }
+            // Đổi active cho item menu con
+            var elMenu = document.querySelector('.ul-icon .m-ul-sub a[onclick*="'
+                "+lang+"
+                '"]');
+            if (elMenu) changeLanguageUI(elMenu, lang);
+        });
+    </script>
 </body>
 
 </html>
